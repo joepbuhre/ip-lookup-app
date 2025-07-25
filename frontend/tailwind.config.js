@@ -1,0 +1,113 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+    darkMode: "class",
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+    // Ensure all colors and utilities are available
+    safelist: [
+        // Background colors
+        "bg-slate-50",
+        "bg-slate-900",
+        "bg-slate-950",
+        "bg-white",
+        "bg-slate-100",
+        "bg-slate-800",
+        "bg-slate-700",
+        "bg-slate-600",
+        "bg-red-50",
+        "bg-red-950/50",
+        "bg-green-500",
+        "bg-slate-300",
+        // Dark mode backgrounds
+        "dark:bg-slate-950",
+        "dark:bg-slate-900",
+        "dark:bg-slate-800",
+        "dark:bg-slate-700",
+        "dark:bg-slate-600",
+        "dark:bg-red-950/50",
+        "dark:bg-slate-600",
+        // Text colors
+        "text-slate-900",
+        "text-slate-100",
+        "text-slate-600",
+        "text-slate-400",
+        "text-slate-700",
+        "text-slate-300",
+        "text-slate-500",
+        "text-red-800",
+        "text-red-200",
+        "text-red-700",
+        "text-red-300",
+        "text-red-400",
+        "text-green-700",
+        "text-green-400",
+        "text-green-600",
+        // Dark mode text colors
+        "dark:text-slate-100",
+        "dark:text-slate-400",
+        "dark:text-slate-300",
+        "dark:text-red-200",
+        "dark:text-red-300",
+        "dark:text-green-400",
+        "dark:text-slate-400",
+        // Border colors
+        "border-slate-200",
+        "border-slate-800",
+        "border-slate-300",
+        "border-slate-600",
+        "border-slate-700",
+        "border-red-200",
+        "border-red-800",
+        "border-slate-100",
+        // Dark mode borders
+        "dark:border-slate-800",
+        "dark:border-slate-700",
+        "dark:border-slate-600",
+        "dark:border-red-800",
+        "dark:border-slate-800",
+        // Focus ring colors
+        "focus:ring-slate-500",
+        "focus:ring-offset-2",
+        "dark:focus:ring-offset-slate-900",
+        // Hover states
+        "hover:bg-slate-50",
+        "dark:hover:bg-slate-600",
+        // Animation utilities
+        "animate-spin",
+        "animate-ping",
+        // Shadow utilities
+        "shadow-sm",
+        // Border utilities
+        "border-t-slate-900",
+        "border-t-slate-100",
+        "dark:border-t-slate-100",
+        "dark:border-slate-600",
+        "border-b-0",
+        "last:border-b-0",
+        // Rounded utilities
+        "rounded-lg",
+        "rounded-md",
+        "rounded-full",
+        // Spacing utilities
+        "space-y-6",
+        "space-y-3",
+        "space-y-2",
+        "space-x-3",
+        "space-x-2",
+        // Grid utilities
+        "grid-cols-1",
+        "lg:grid-cols-2",
+        // Other utilities
+        "max-w-4xl",
+        "max-w-2xl",
+        "max-w-md",
+        "max-w-[60%]",
+        "truncate",
+        "uppercase",
+        "tracking-wide",
+        "transition-colors",
+    ],
+};
