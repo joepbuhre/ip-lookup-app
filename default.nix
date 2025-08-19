@@ -1,22 +1,3 @@
-# { pkgs ? import <nixpkgs> {} }:
-# let
-# in
-#   pkgs.mkShell {
-#     buildInputs = [
-#       pkgs.nodejs_20
-#       pkgs.go
-#       pkgs.air
-#       pkgs.go-swag
-#       pkgs.gopls
-#     ];
-
-#     # export GOPATH="/home/jbuhre/development/joepbuhre/snappic/backend/.gopath"
-#     # export PATH="$PATH:/home/jbuhre/development/joepbuhre/snappic/backend/.gopath/bin"
-#   shellHook = ''
-#     export GOROOT="${pkgs.go}"
-#   '';
-# }
-
 { pkgs ? import <nixpkgs> { } }:
 
 with pkgs;
@@ -40,7 +21,7 @@ mkShell {
     sqlc
   ];
   shellHook = ''
-    export CUR_DIR=/home/jbuhre/development/joepbuhre/vinovault
+    export CUR_DIR=/home/jbuhre/development/joepbuhre/ip-lookup-app
     export PATH="$PATH:$CUR_DIR/backend/.gopath/bin"
     export GOPATH="$CUR_DIR/backend/.gopath"
 

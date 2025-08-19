@@ -1,3 +1,10 @@
+export interface InfoResponse {
+    IPInfo: IPInfo;
+    HeaderInfo: HeaderInfo;
+}
+
+export type HeaderInfo = { [key: string]: string[] };
+
 export interface IPInfo {
     query: string;
     status: string;

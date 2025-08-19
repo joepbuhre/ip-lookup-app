@@ -161,146 +161,12 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Location Information -->
-                    <div
-                        class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 shadow-sm"
-                    >
-                        <div class="flex items-center mb-4">
-                            <div
-                                class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center mr-3"
-                            >
-                                <svg
-                                    class="w-4 h-4 text-slate-600 dark:text-slate-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                    ></path>
-                                </svg>
-                            </div>
-                            <h3
-                                class="text-base font-semibold text-slate-900 dark:text-slate-100"
-                            >
-                                Location
-                            </h3>
-                        </div>
+                    <LocationInformation :ip-info="ipInfo" />
 
-                        <div class="space-y-3">
-                            <InfoItem
-                                label="Country"
-                                :value="`${ipInfo.country} ${getCountryFlag(
-                                    ipInfo.countryCode
-                                )}`"
-                            />
-                            <InfoItem
-                                label="Region"
-                                :value="ipInfo.regionName"
-                            />
-                            <InfoItem label="City" :value="ipInfo.city" />
-                            <InfoItem label="ZIP Code" :value="ipInfo.zip" />
-                            <InfoItem
-                                label="Timezone"
-                                :value="ipInfo.timezone"
-                            />
-                            <InfoItem
-                                label="Coordinates"
-                                :value="`${ipInfo.lat.toFixed(
-                                    4
-                                )}, ${ipInfo.lon.toFixed(4)}`"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Network Information -->
-                    <div
-                        class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 shadow-sm"
-                    >
-                        <div class="flex items-center mb-4">
-                            <div
-                                class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center mr-3"
-                            >
-                                <svg
-                                    class="w-4 h-4 text-slate-600 dark:text-slate-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"
-                                    ></path>
-                                </svg>
-                            </div>
-                            <h3
-                                class="text-base font-semibold text-slate-900 dark:text-slate-100"
-                            >
-                                Network
-                            </h3>
-                        </div>
-
-                        <div class="space-y-3">
-                            <InfoItem label="ISP" :value="ipInfo.isp" />
-                            <InfoItem
-                                label="Organization"
-                                :value="ipInfo.org"
-                            />
-                            <InfoItem label="AS Number" :value="ipInfo.as" />
-                            <InfoItem label="AS Name" :value="ipInfo.asname" />
-                        </div>
-                    </div>
+                    <NetworkInformation :ip-info="ipInfo" />
 
                     <!-- Properties -->
-                    <div
-                        class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 shadow-sm"
-                    >
-                        <div class="flex items-center mb-4">
-                            <div
-                                class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center mr-3"
-                            >
-                                <svg
-                                    class="w-4 h-4 text-slate-600 dark:text-slate-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    ></path>
-                                </svg>
-                            </div>
-                            <h3
-                                class="text-base font-semibold text-slate-900 dark:text-slate-100"
-                            >
-                                Properties
-                            </h3>
-                        </div>
-
-                        <div class="space-y-2">
-                            <PropertyBadge
-                                :active="ipInfo.mobile"
-                                label="Mobile Connection"
-                            />
-                            <PropertyBadge
-                                :active="ipInfo.proxy"
-                                label="Proxy Server"
-                            />
-                            <PropertyBadge
-                                :active="ipInfo.hosting"
-                                label="Hosting Service"
-                            />
-                        </div>
-                    </div>
-
+                    <PropertyInformation :ip-info="ipInfo" />
                     <!-- Map -->
                     <div
                         class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 shadow-sm"
@@ -339,6 +205,7 @@
                             :query="ipInfo.query"
                         />
                     </div>
+                    <HeaderInformation :header-info="headerInfo" />
                 </div>
             </div>
         </div>
@@ -347,23 +214,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import type { IPInfo } from "./types/ip";
-import InfoItem from "./components/InfoItem.vue";
-import PropertyBadge from "./components/PropertyBadge.vue";
+import type { HeaderInfo, InfoResponse, IPInfo } from "./types/ip";
 import MapView from "./components/MapView.vue";
+import LocationInformation from "./components/LocationInformation.vue";
+import NetworkInformation from "./components/NetworkInformation.vue";
+import PropertyInformation from "./components/PropertyInformation.vue";
+import HeaderInformation from "./components/HeaderInformation.vue";
 
 const ipInfo = ref<IPInfo | null>(null);
+const headerInfo = ref<HeaderInfo | null>(null);
 const loading = ref(true);
 const error = ref("");
 const copied = ref(false);
-
-const getCountryFlag = (countryCode: string): string => {
-    const codePoints = countryCode
-        .toUpperCase()
-        .split("")
-        .map((char) => 127397 + char.charCodeAt(0));
-    return String.fromCodePoint(...codePoints);
-};
 
 const copyToClipboard = async (text: string) => {
     try {
@@ -384,15 +246,18 @@ const lookupCurrentIP = async () => {
 
     try {
         const response = await fetch("/api/my-ip");
-        const data = await response.json();
+        const data: InfoResponse = await response.json();
 
         if (!response.ok) {
+            // @ts-ignore
             throw new Error(data.message || "Failed to lookup IP");
         }
 
-        if (data.status === "success") {
-            ipInfo.value = data;
+        if (data.IPInfo.status === "success") {
+            ipInfo.value = data.IPInfo;
+            headerInfo.value = data.HeaderInfo;
         } else {
+            // @ts-ignore
             throw new Error(data.message || "IP lookup failed");
         }
     } catch (err) {

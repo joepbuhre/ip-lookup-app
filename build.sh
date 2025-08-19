@@ -32,7 +32,7 @@ npm run build
 cd ..
 
 echo "🔨 Building Go binary..."
-go build -tags embed -o ip-lookup-app
+CGO_ENABLED=0 go build -tags embed -o ./ip-lookup-app
 
 echo "✅ Build complete!"
 echo ""

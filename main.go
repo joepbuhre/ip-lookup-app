@@ -13,6 +13,11 @@ import (
 	"strings"
 )
 
+type InfoResponse struct {
+	IPInfo     IPInfo
+	HeaderInfo map[string][]string
+}
+
 // IPInfo represents the structure of IP lookup response
 type IPInfo struct {
 	Query         string  `json:"query"`
@@ -88,6 +93,28 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println(r.URL.Path)
+	if strings.Contains(r.Header.Get("Accept"), "html") {
+		// Manual user request
+		writeHtmlPage(path, w)
+		return
+	} else {
+		// Probably normal curl request, so let return `/api/my-ip`
+		ip := getClientIP(r)
+		ipInfo, err := getIPInfo(ip)
+		if err != nil {
+			sendErrorResponse(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte(ipInfo.Query))
+		return
+	}
+
+}
+
+func writeHtmlPage(path string, w http.ResponseWriter) {
 	fullPath := filepath.Join("frontend/dist", path)
 	data, err := fs.ReadFile(frontendFS, fullPath)
 	if err != nil {
@@ -156,7 +183,13 @@ func handleIPLookup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(ipInfo)
+
+	ir := InfoResponse{
+		IPInfo:     *ipInfo,
+		HeaderInfo: r.Header,
+	}
+
+	json.NewEncoder(w).Encode(ir)
 }
 
 // Handle current IP lookup
@@ -167,15 +200,21 @@ func handleMyIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ipInfo, err := getIPInfo("")
+	clientIP := getClientIP(r)
+	ipInfo, err := getIPInfo(clientIP)
 	if err != nil {
-		log.Printf("Error getting IP info for %s: %v", "", err)
+		log.Printf("Error getting IP info for %s: %v", clientIP, err)
 		sendErrorResponse(w, "Failed to lookup IP information", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(ipInfo)
+	ir := InfoResponse{
+		IPInfo:     *ipInfo,
+		HeaderInfo: r.Header,
+	}
+
+	json.NewEncoder(w).Encode(ir)
 }
 
 // Get client IP address
@@ -187,6 +226,10 @@ func getClientIP(r *http.Request) string {
 		return realIP
 	}
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if strings.Contains(ip, "::1") || strings.Contains(ip, "localhost") {
+		log.Printf("Have got local ip of [%s]", ip)
+		return ""
+	}
 	if err != nil {
 		return r.RemoteAddr
 	}

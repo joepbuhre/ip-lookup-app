@@ -1,8 +1,8 @@
 <template>
-    <div class="w-full">
+    <div class="w-full h-full">
         <div
             ref="mapContainer"
-            class="rounded-md h-64 w-full overflow-hidden border border-slate-200 dark:border-slate-700"
+            class="rounded-md h-full w-full overflow-hidden border border-slate-200 dark:border-slate-700"
             style="min-height: 356px"
         ></div>
     </div>

@@ -8,9 +8,9 @@
             {{ label }}
         </dt>
         <dd
-            class="text-sm font-medium text-slate-900 dark:text-slate-100 text-right max-w-[60%] truncate"
+            class="text-sm font-medium text-slate-900 dark:text-slate-100 text-right"
         >
-            {{ value || "N/A" }}
+            {{ (Array.isArray(value) ? value.join("; ") : value) || "N/A" }}
         </dd>
     </div>
 </template>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 interface Props {
     label: string;
-    value: string | number;
+    value: string | number | string[];
 }
 
 defineProps<Props>();
