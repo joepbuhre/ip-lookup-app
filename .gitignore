@@ -179,3 +179,5 @@ tmp
 ip-lookup-app
 
 # End of https://www.toptal.com/developers/gitignore/api/vue,go,node
+
+.gopath
