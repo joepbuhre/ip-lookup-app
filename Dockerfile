@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./frontend .
 
 RUN npm ci --omit=dev
+RUN npm run build
 
 FROM golang:1.23-alpine AS gobuilder
 
