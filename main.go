@@ -94,7 +94,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println(r.URL.Path)
-	if strings.Contains(r.Header.Get("Accept"), "html") {
+	if IsBrowserRequest(r) {
 		// Manual user request
 		writeHtmlPage(path, w)
 		return
@@ -119,7 +119,7 @@ func writeHtmlPage(path string, w http.ResponseWriter) {
 	data, err := fs.ReadFile(frontendFS, fullPath)
 	if err != nil {
 		// serve index.html for SPA routing
-		data, err = fs.ReadFile(frontendFS, "frontend/dist/index.html")
+		data, err = fs.ReadFile(frontendFS, fmt.Sprintf("frontend/dist/%s", path))
 		if err != nil {
 			w.Header().Set("Content-Type", "text/html")
 			fmt.Fprintf(w, `
@@ -275,4 +275,35 @@ func sendErrorResponse(w http.ResponseWriter, message string, statusCode int) {
 		Status:  "error",
 		Message: message,
 	})
+}
+
+// IsBrowserRequest returns true if the request likely originates from a web browser.
+func IsBrowserRequest(r *http.Request) bool {
+	ua := r.Header.Get("User-Agent")
+	if ua == "" {
+		return false
+	}
+
+	// modern browsers often send Sec-Fetch-* headers
+	if r.Header.Get("Sec-Fetch-Site") != "" ||
+		r.Header.Get("Sec-Fetch-Mode") != "" ||
+		r.Header.Get("Sec-Fetch-Dest") != "" {
+		return true
+	}
+
+	// browsers almost always send Accept-Language
+	if r.Header.Get("Accept-Language") != "" {
+		return true
+	}
+
+	// fallback: basic User-Agent check
+	if strings.Contains(ua, "Mozilla") ||
+		strings.Contains(ua, "Chrome") ||
+		strings.Contains(ua, "Safari") ||
+		strings.Contains(ua, "Firefox") ||
+		strings.Contains(ua, "Edge") {
+		return true
+	}
+
+	return false
 }
